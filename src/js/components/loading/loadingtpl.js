@@ -1,0 +1,1 @@
+module.exports = '<div class="mod-loading"><div class="back"><i class="icon"></i></div></div>';

@@ -1,0 +1,43 @@
+@import '../../../css/lesshat';
+
+@unit: 32rem;
+
+.mod-loading {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 9999;
+  .display(flex);
+  .justify-content(center);
+  .align-items(center);
+  width: 100%;
+  height: 100%;
+  
+  opacity: 0;
+  pointer-events: none;
+  /*.transition(opacity .1s ease-out);
+  will-change: opacity;*/
+
+  .back {
+    .display(flex);
+    .justify-content(center);
+    .align-items(center);
+    width: 128/@unit;
+    height: 128/@unit;
+    .border-radius(16/@unit);
+    background-color: rgba(0, 0, 0, .8);
+
+    .icon {
+      display: block;
+      width: 60/@unit;
+      height: 60/@unit;
+      background: url(./loading2.svg) center center no-repeat;
+      background-size: contain;
+    }
+  }  
+}
+
+.active.mod-loading {
+  opacity: 1;
+  pointer-events: auto;
+}

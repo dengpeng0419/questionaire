@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no,email=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="wap-font-scale" content="no"/>
+    <title>测评</title>
+    <link href="../css/list.css" rel="stylesheet">
+</head>
+<body>
+<div class="content" id="survey_page">
+    <div class="questions" id="questions">
+        <div style="text-align: center; font-size: 16px; padding: 20px 0;">加载中...</div>
+    </div>
+    <div class="submit_button">开始测评</div>
+
+</div>
+
+<script id="_dev-jsload" src="../js/lib/load.js" data-dep="zepto,template" data-entry="list.js" async></script>
+<script type="text/html" id="q_item">
+    <div class="title">{{periodTitle}}</div>
+    <!--<div class="topic_title">chose</div>-->
+    <form class="border-1px border-all form">
+        {{if deptList.length > 0}}
+        {{each deptList}}
+        <div class="answer border-1px border-bottom">
+            <input id={{$value.deptId}} type="radio" {{if $index === 0}}checked="checked"{{/if}} name="1" value={{$value.deptId}}>
+            <label for={{$value.deptId}}></label>
+            <span>{{$value.deptName}}</span>
+        </div>
+        {{/each}}
+        {{/if}}
+    </form>
+</script>
+</body>
+</html>

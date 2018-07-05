@@ -1,0 +1,131 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
+    <!--<script>-->
+    <!--// 无线适配方案-->
+    <!--(function(win) {-->
+
+    <!--var doc = win.document;-->
+    <!--var docEl = doc.documentElement;-->
+    <!--var tid;-->
+
+    <!--// 计算rem基准值-->
+    <!--function refreshRem() {-->
+    <!--var width = docEl.getBoundingClientRect().width;-->
+    <!--// 设置最大宽度-->
+    <!--width > 750 && (width = 750);-->
+    <!--var rem = width / 10 + 'px';-->
+    <!--docEl.style.fontSize = rem;-->
+    <!--}-->
+
+    <!--// 浏览器窗口大小发生变化后重新计算rem基准值-->
+    <!--win.addEventListener('resize', function() {-->
+    <!--clearTimeout(tid);-->
+    <!--tid = setTimeout(refreshRem, 300);-->
+    <!--}, false);-->
+
+    <!--// 当从往返缓存返回前一个页面时重新计算rem基准值-->
+    <!--win.addEventListener('pageshow', function(e) {-->
+    <!--if (e.persisted) {-->
+    <!--clearTimeout(tid);-->
+    <!--tid = setTimeout(refreshRem, 300);-->
+    <!--}-->
+    <!--}, false);-->
+
+    <!--refreshRem();-->
+
+    <!--})(window);-->
+    <!--</script>-->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no,email=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="wap-font-scale" content="no"/>
+    <title>测评</title>
+    <link href="../css/index.css" rel="stylesheet">
+</head>
+<body>
+<!--<div class="content" id="survey_page">-->
+<!--<div class="header" id="begin_content">-->
+<!--<div class="top_desc">欢迎</div>-->
+<!--</div>-->
+<!--<div class="questions" id="questions">-->
+<!--<div style="text-align: center; font-size: 16px; padding: 20px 0;">加载中...</div>-->
+<!--</div>-->
+<!--<div class="submit_button">确认</div>-->
+
+<!--</div>-->
+
+<div class="phone_content">
+
+</div>
+<div class="pc_content"></div>
+
+<script id="_dev-jsload" src="../js/lib/load.js" data-dep="zepto,template" data-entry="index.js" async></script>
+<script type="text/html" id="phone_item">
+    {{if headList.length > 0}}
+    <div class="title">{{title}}</div>
+    <div class="question-num">
+        <div class="question-current">1</div>
+        <div class="question-total">/<span>{{headList.length}}</span></div>
+    </div>
+    {{each headList as item}}
+    <div class="list {{'list'+($index+1)}} {{if $index != 0}}hide{{/if}}" id="list">
+        <div class="question-title">{{item.title}}</div>
+        <div class="answer-content border-1px border-bottom">
+            {{each item.bodyList}}
+            {{if item.type != 2}}
+            <div class="answer-item border-1px border-top">
+                <input id={{item.headId}} type="radio" name={{'q'+item.headId}} value={{$value.score}}>
+                <span>{{$value.bodyNo}} {{$value.title}}</span>
+            </div>
+            {{else}}
+            <div class="answer-item border-1px border-bottom">
+                <input id={{$value.bodyNo}} type="checkbox" name={{item.headId}} value={{$value.score}}>
+                <span>{{$value.bodyNo}} {{$value.title}}</span>
+            </div>
+            {{/if}}
+            {{/each}}
+        </div>
+    </div>
+    {{/each}}
+    <div class="choose_button">
+        <div class="before_button hide">上一题</div>
+        <div class="next_button">下一题</div>
+    </div>
+    {{/if}}
+</script>
+<script type="text/html" id="pc_item">
+    {{if headList.length > 0}}
+    <div class="title">{{title}}</div>
+    <div class="title_line"></div>
+    {{each headList as item num}}
+    <div class="error_bar hide" id={{'error' + (num + 1)}}>请选择一个选项</div>
+    <div class="topic_title">{{item.headNo}} {{item.title}}</div>
+    <form>
+        {{each item.bodyList}}
+        {{if item.type !=2}}
+        <div class="answer">
+            <input id={{$value.bodyNo}} type="radio" name={{item.headId}} value={{$value.score}} num={{num}}>
+            <label for={{item.headId}}></label>
+            <span>{{$value.bodyNo}} {{$value.title}}</span>
+        </div>
+        {{else}}
+        <div class="answer">
+            <input id={{$value.bodyNo}} type="checkbox" name={{item.headId}} value={{$value.score}}>
+            <label for={{item.headId}}></label>
+            <span>{{$value.title}}</span>
+        </div>
+        {{/if}}
+        {{/each}}
+    </form>
+    {{/each}}
+    <div class="submit_button">确认</div>
+    {{/if}}
+</script>
+</body>
+</html>

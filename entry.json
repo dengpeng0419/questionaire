@@ -1,0 +1,16 @@
+{
+  "alias": {
+    "zepto": "src/js/lib/zepto.js",
+    "template": "src/js/lib/template.js",
+    "qingjs": "src/js/components/qingjs/qingjs.js",
+    "utils": "src/js/components/utils/utils.js",
+    "loading": "src/js/components/loading/loading.js",
+    "jweixin100": "src/js/components/jweixin100/jweixin100.js",
+    "weixinshare": "src/js/components/weixinshare/weixinshare.js",
+    "toast": "src/js/components/toast/toast.js"
+  },
+  "entry": {
+    "index": "src/js/index.js",
+    "list": "src/js/list.js"
+  }
+}
