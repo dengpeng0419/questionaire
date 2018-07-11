@@ -15,7 +15,7 @@ body {
   padding-top: 30/@unit;
   margin-bottom: 100/@unit;
   text-align: center;
-  font-size: 100/@unit;
+  font-size: 90/@unit;
   color: #333;
 }
 
@@ -24,7 +24,7 @@ body {
 }
 
 .content{
-  padding: 60/@unit 68/@unit;
+  padding: 60/@unit 68/@unit 220/@unit;
 }
 
 .topic_title {
@@ -35,11 +35,11 @@ body {
   position: relative;
   height: 200/@unit;
   line-height: 200/@unit;
-  font-size: 80/@unit;
+  font-size: 65/@unit;
   span {
     position: absolute;
     top: 0;
-    left: 170/@unit;
+    left: 140/@unit;
     height: 200/@unit;
     pointer-events: none;
   }
@@ -78,12 +78,21 @@ input[type="checkbox"] {
 
 label {
   position: absolute;
-  left: 60/@unit;
+  left: 40/@unit;
   top: 60/@unit;
   width: 80/@unit;
   height: 80/@unit;
   background-image: url("../images/radio_off.png");
   background-size: cover;
+  pointer-events: none;
+}
+
+.finished_label {
+  background-image: url("../images/radio_sel.png");
+}
+
+.finished_text {
+  color: #666666;
 }
 
 input:checked+label::after {
@@ -95,12 +104,25 @@ input:checked+label::after {
   background-size: cover;
 }
 
+//input[disabled]+label::after,input:disabled+label::after {
+//  position: absolute;
+//  content: "";
+//  width: 80/@unit;
+//  height: 80/@unit;
+//  background-image: url("../images/radio_sel.png");
+//  background-size: cover;
+//}
+
 .submit_button {
-  margin: 160/@unit 0;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
   padding: 40/@unit 0;
   color: #fff;
-  background: #4D7BFE;
+  background: #058785;
   text-align: center;
+  z-index: 9;
 }
 
 .hide {
@@ -118,6 +140,7 @@ input:checked+label::after {
   }
 
   .submit_button {
+    position: relative;
     width: 800/@unit;
     border-radius: 20/@unit;
     margin: 160/@unit auto;
@@ -129,7 +152,20 @@ input:checked+label::after {
 }
 
 @media (max-width: 320px) {
+  html {
+    height: 100%;
+    font-size: 74/@unit;
+  }
   .title {
-    font-size: 86/@unit;
+    font-size: 76/@unit;
+  }
+}
+
+@media only screen and (device-width: 375px) and (device-height: 812px){
+  .content {
+    padding-bottom: 288/@unit;
+  }
+  .submit_button {
+    padding-bottom: 108/@unit;
   }
 }

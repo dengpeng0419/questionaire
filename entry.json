@@ -1,5 +1,6 @@
 {
   "alias": {
+    "qcode": "src/js/lib/qrcode.min.js",
     "zepto": "src/js/lib/zepto.js",
     "template": "src/js/lib/template.js",
     "qingjs": "src/js/components/qingjs/qingjs.js",

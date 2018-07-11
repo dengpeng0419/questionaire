@@ -36,7 +36,7 @@ var utils = {
 				data       : {},
 				timeout    : 30000,
 				xhrFields: {
-		            withCredentials: true
+		            withCredentials: false
 		        },
 		        crossDomain: true,
 		        customUrl: false,

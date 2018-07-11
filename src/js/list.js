@@ -13,6 +13,7 @@ $(function () {
 	var data = {};
 	var deptId = '';  //部门id
 	var token = '';
+	var apFlag = 'false';
 	
 	Loading.show();
 	$.Ajax({
@@ -28,34 +29,49 @@ $(function () {
 				data = json.data;
 				var html = template('q_item', data);
 				$('.questions').html(html);
-				var html = template('q_item', data);
-				$('.questions').html(html);
+				$('.submit_button').removeClass('hide');
+				//console.log($("input[apFlag='false']")[0])
+				if($("input[apFlag='false']")[0]) {
+					$("input[apFlag='false']")[0].setAttribute('checked', 'checked');
+				}
+				if(data.deptList && $("input[apFlag='false']").length === data.deptList.length) {
+					apFlag = 'true'
+				}
+				addListens()
 			}
 		},
-		error: function(xhr, msg) {
+		error: function(erro) {
 			Loading.hide();
-			Toast(msg || '系统正在开小差')
+			Toast(erro.msg || '系统正在开小差')
 		}
 	})
 	
-	$('input').on('click', function(){
-		deptId = this.getAttribute('id');
-		token = this.getAttribute('value');
-		console.log(deptId)
-	})
-	
-	$('.submit_button').on('click', function() {
-		deptId = $("input:checked").val();
-		if(!deptId) {
-			Toast('请选择一个选项');
-			return;
-		}
+	function addListens() {
+		$('input').on('click', function(){
+			deptId = this.getAttribute('id');
+			token = this.getAttribute('value');
+			apFlag = this.getAttribute('apflag');
+			//console.log($("input[name='1']")[0])
+		})
 		
-		if(window.location.href.indexOf('token=') >= 0) {
-			window.location.href = jumpUrl + '&deptId=' + deptId;
-		} else {
-			Toast('请输入正确的链接');
-		}
-	})
+		$('.submit_button').on('click', function() {
+			deptId = $("input:checked").val();
+			//console.log($('input')[0].getAttribute('name'))
+			if(!deptId) {
+				Toast('您已经完成了全部测评');
+				return;
+			}
+			
+			if(window.location.href.indexOf('token=') >= 0) {
+				if(apFlag === 'true') {
+					Toast('您已经测评过啦');
+					return;
+				}
+				window.location.href = jumpUrl + '&deptId=' + deptId;
+			} else {
+				Toast('请输入正确的链接');
+			}
+		})
+	}
 });
 

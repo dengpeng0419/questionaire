@@ -68,20 +68,22 @@
 <script id="_dev-jsload" src="../js/lib/load.js" data-dep="zepto,template" data-entry="index.js" async></script>
 <script type="text/html" id="phone_item">
     {{if headList.length > 0}}
-    <div class="title">{{title}}</div>
-    <div class="question-num">
-        <div class="question-current">1</div>
-        <div class="question-total">/<span>{{headList.length}}</span></div>
-    </div>
+    <div class="title_phone"></div>
+
     {{each headList as item}}
     <div class="list {{'list'+($index+1)}} {{if $index != 0}}hide{{/if}}" id="list">
-        <div class="question-title">{{item.title}}</div>
+        <div class="question-num">
+            <div class="question-current">1</div>
+            <div class="question-total">/<span>{{headList.length}}</span></div>
+            <div class="question-title">{{item.title}}</div>
+        </div>
         <div class="answer-content border-1px border-bottom">
             {{each item.bodyList}}
             {{if item.type != 2}}
             <div class="answer-item border-1px border-top">
                 <input id={{item.headId}} type="radio" name={{'q'+item.headId}} value={{$value.score}}>
-                <span>{{$value.bodyNo}} {{$value.title}}</span>
+                <label for={{item.headId}}></label>
+                <span>{{$value.title}}</span>
             </div>
             {{else}}
             <div class="answer-item border-1px border-bottom">
@@ -101,7 +103,7 @@
 </script>
 <script type="text/html" id="pc_item">
     {{if headList.length > 0}}
-    <div class="title">{{title}}</div>
+    <div class="title"></div>
     <div class="title_line"></div>
     {{each headList as item num}}
     <div class="error_bar hide" id={{'error' + (num + 1)}}>请选择一个选项</div>

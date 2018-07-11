@@ -10,7 +10,7 @@ var Loading = require('loading');
 $(function() {
 	var urlToken = utils.parseQs().token;
 	var urlId = utils.parseQs().deptId;
-	var initUrl = 'http://116.62.17.128:9090/ap/test/getDeptItems';
+	var initUrl = 'http://116.62.17.128:9090/ap/test/getDeptItems';//http://116.62.17.128:9090
 	var submitUrl = 'http://116.62.17.128:9090/ap/test/save';
 	var data = {};
 	var answer = [];        //答案数组
@@ -21,52 +21,32 @@ $(function() {
 	var curType = '';
 	var touchItem = [];     //phone点击选项
 	var touchItems = [];    //pc点击选项
-
-// var data = {
-// 	title: "部门标题",
-// 	headList: [{
-// 		headId: "1",
-// 		headNo: "题号1，展示",
-// 		title: "题目描述1，展示",
-// 		bodyList: [{
-// 				bodyId: "选项id，暂时没用",
-// 				bodyNo: "选项编号11，展示",
-// 				title: "选项描述，展示",
-// 				score: "选项分值11，保存接口上传"
-// 			}, {
-// 				bodyId: "选项id，暂时没用",
-// 				bodyNo: "选项编号12，展示",
-// 				title: "选项描述，展示",
-// 				score: "选项分值12，保存接口上传"
-// 			}]
-// 	}, {
-// 		headId: "2",
-// 		headNo: "题号2，展示",
-// 		title: "题目描述2，展示",
-// 		bodyList: [{
-// 			bodyId: "选项id，暂时没用",
-// 			bodyNo: "选项编号21，展示",
-// 			title: "选项描述，展示",
-// 			score: "选项分值21，保存接口上传"
-// 		}, {
-// 			bodyId: "选项id，暂时没用",
-// 			bodyNo: "选项编号22，展示",
-// 			title: "选项描述，展示",
-// 			score: "选项分值22，保存接口上传"
-// 		}]
-// 	}]
-// }
+	var department = urlId;
 	
-	getInitData(urlToken, urlId);
+	initPage(urlId);
 	
-	function getInitData(urlToken, urlId) {
+	function initPage(id) {
+		data = {};
+		answer = [];
+		curQuesNum = 1;
+		curAnswer = '';
+		curQuesNo = 0;
+		curName = '';
+		curType = '';
+		touchItem = [];
+		touchItems = [];
+		department = id;
+		getInitData(id);
+	}
+	
+	function getInitData(id) {
 		Loading.show();
 		$.Ajax({
 			customUrl: true,
 			url: initUrl,
 			data: {
 				token: urlToken,
-				deptId: urlId
+				deptId: id
 			},
 			success: function(json) {
 				Loading.hide();
@@ -76,9 +56,9 @@ $(function() {
 					initView(data);
 				}
 			},
-			error: function(xhr, msg) {
+			error: function(erro) {
 				Loading.hide();
-				Toast(msg || '系统正在开小差')
+				Toast(erro.msg || '系统正在开小差')
 			}
 		})
 	}
@@ -87,8 +67,10 @@ $(function() {
 		var html = template('pc_item', data);
 		$('.pc_content').html(html);
 		
+		var tt = data.title.replace('->','<span>->')+'</span>';
 		var html2 = template('phone_item', data);
 		$('.phone_content').html(html2);
+		$('.title_phone')[0].innerHTML = tt;
 		
 		for(var i = 0; i < data.headList.length; i++) {
 			answer[i] = 0;
@@ -208,29 +190,37 @@ $(function() {
 			url: submitUrl,
 			data: {
 				token: urlToken,
-				deptId: urlId,
+				deptId: department,
 				itemList: answer
 			},
 			success: function(json) {
 				Loading.hide();
 				//alert(JSON.stringify(json.data));
 				if (json && json.code == 0) {
-					var result = '<div class="submit_result">' +
-						'<div class="submit_icon"></div>' +
-						'<div class="submit_text">完成测评</div>' +
-						'</div>';
-					if(client === 'phone') {
-						$('.phone_content').html(result);
-					} else {
-						$('.pc_content').html(result);
-					}
+					handleSuccess(json.data, client);
 				}
 			},
-			error: function(xhr, msg) {
+			error: function(erro) {
 				Loading.hide();
-				Toast(msg || '系统正在开小差')
+				Toast(erro.msg || '系统正在开小差')
 			}
 		})
+	}
+	
+	function handleSuccess(data, client) {
+		if(data.isFinished) {
+			var result = '<div class="submit_result">' +
+				'<div class="submit_icon"></div>' +
+				'<div class="submit_text">完成测评</div>' +
+				'</div>';
+			if(client === 'phone') {
+				$('.phone_content').html(result);
+			} else {
+				$('.pc_content').html(result);
+			}
+		} else {
+			initPage(data.deptId);
+		}
 	}
 });
 

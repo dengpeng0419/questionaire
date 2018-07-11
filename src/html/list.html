@@ -9,18 +9,52 @@
     <meta name="msapplication-tap-highlight" content="no">
     <meta name="wap-font-scale" content="no"/>
     <title>测评</title>
+    <script type="text/javascript" src="../js/lib/zepto.js"></script>
+    <script type="text/javascript" src="../js/lib/qrcode.min.js"></script>
+
     <link href="../css/list.css" rel="stylesheet">
 </head>
 <body>
 <div class="content" id="survey_page">
     <div class="questions" id="questions">
-        <div style="text-align: center; font-size: 16px; padding: 20px 0;">加载中...</div>
+        <div id="loading" style="display: flex; justify-content: center; text-align: center; font-size: 16px; padding: 20px 0;">加载中...</div>
+        <p id="remind" style="text-align: center; font-size: 20px; padding: 20px 0;"></p>
     </div>
-    <div class="submit_button">开始测评</div>
+    <div class="submit_button hide">开始测评</div>
 
 </div>
+<div id="qrcode"></div>
 
-<script id="_dev-jsload" src="../js/lib/load.js" data-dep="zepto,template" data-entry="list.js" async></script>
+<script>
+	var url = window.location.href;
+	var uas = window.navigator.userAgent;
+
+	if (uas.indexOf("MSIE 6.0")>0 || uas.indexOf("MSIE 7.0")>0 || uas.indexOf("MSIE 8.0")>0 || uas.indexOf("MSIE 9.0")>0 || uas.indexOf("MSIE 10.0")>0){
+		showCode(url);
+	} else {
+		setTimeout(function() {
+			if($('.remind')) {
+				showCode(url);
+            }
+        }, 5000);
+    }
+
+    function showCode(url) {
+		if(document.getElementById("loading")) {
+			document.getElementById("loading").innerText = "";
+			document.getElementById("remind").innerText = "当前浏览器版本太低，请升级到最新版或者扫描上图的二维码用手机(QQ/微信)试试";
+
+			var qrcode = new QRCode(document.getElementById("loading"), {
+                width : 200,
+                height : 200
+            });
+            qrcode.makeCode(url);
+		}
+    }
+</script>
+<script type="text/javascript" src="../js/lib/template.js"></script>
+<script type="text/javascript" src="../js/list.js"></script>
+
 <script type="text/html" id="q_item">
     <div class="title">{{periodTitle}}</div>
     <!--<div class="topic_title">chose</div>-->
@@ -28,13 +62,15 @@
         {{if deptList.length > 0}}
         {{each deptList}}
         <div class="answer border-1px border-bottom">
-            <input id={{$value.deptId}} type="radio" {{if $index === 0}}checked="checked"{{/if}} name="1" value={{$value.deptId}}>
-            <label for={{$value.deptId}}></label>
-            <span>{{$value.deptName}}</span>
+            <input id={{$value.deptId}} type="radio" name="1" value={{$value.deptId}} apFlag={{$value.apFlag+''}}
+                {{if $value.apFlag}}disabled{{/if}}>
+            <label for={{$value.deptId}} {{if $value.apFlag}}class="finished_label"{{/if}}></label>
+            <span {{if $value.apFlag}}class="finished_text"{{/if}}>{{$value.deptName}}</span>
         </div>
         {{/each}}
         {{/if}}
     </form>
 </script>
+
 </body>
 </html>
