@@ -67,8 +67,8 @@
 
 <script id="_dev-jsload" src="../js/lib/load.js" data-dep="zepto,template" data-entry="index.js" async></script>
 <script type="text/html" id="phone_item">
-    {{if headList.length > 0}}
-    <div class="title_phone"></div>
+    {{if headList && headList.length > 0}}
+    <div class="title_phone">{{title}}</div>
 
     {{each headList as item}}
     <div class="list {{'list'+($index+1)}} {{if $index != 0}}hide{{/if}}" id="list">
@@ -81,8 +81,8 @@
             {{each item.bodyList}}
             {{if item.type != 2}}
             <div class="answer-item border-1px border-top">
-                <input id={{item.headId}} type="radio" name={{'q'+item.headId}} value={{$value.score}}>
-                <label for={{item.headId}}></label>
+                <input id={{item.headId}} type="radio" name={{'q'+item.headId}} value={{$value.score}} aid={{$value.bodyId}}>
+                <label for={{item.headId}} id={{'label'+item.headId+$value.bodyId}} class={{'label'+item.headId}}></label>
                 <span>{{$value.title}}</span>
             </div>
             {{else}}
@@ -96,14 +96,15 @@
     </div>
     {{/each}}
     <div class="choose_button">
+        <div class="quit_button">放弃</div>
         <div class="before_button hide">上一题</div>
         <div class="next_button">下一题</div>
     </div>
     {{/if}}
 </script>
 <script type="text/html" id="pc_item">
-    {{if headList.length > 0}}
-    <div class="title"></div>
+    {{if headList && headList.length > 0}}
+    <div class="title">{{title}}</div>
     <div class="title_line"></div>
     {{each headList as item num}}
     <div class="error_bar hide" id={{'error' + (num + 1)}}>请选择一个选项</div>
@@ -114,7 +115,7 @@
         <div class="answer">
             <input id={{$value.bodyNo}} type="radio" name={{item.headId}} value={{$value.score}} num={{num}}>
             <label for={{item.headId}}></label>
-            <span>{{$value.bodyNo}} {{$value.title}}</span>
+            <span> {{$value.title}}</span>
         </div>
         {{else}}
         <div class="answer">
@@ -126,7 +127,10 @@
         {{/each}}
     </form>
     {{/each}}
-    <div class="submit_button">确认</div>
+    <div class="pc_button">
+        <div class="quit_button pc_quit">放弃</div>
+        <div class="submit_button">确认</div>
+    </div>
     {{/if}}
 </script>
 </body>

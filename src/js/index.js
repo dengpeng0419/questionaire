@@ -6,17 +6,20 @@ var template = require('template');
 var Toast = require('toast');
 var utils = require('utils');
 var Loading = require('loading');
+var dialog = require('dialog');
 
 $(function() {
 	var urlToken = utils.parseQs().token;
 	var urlId = utils.parseQs().deptId;
-	var initUrl = 'http://116.62.17.128:9090/ap/test/getDeptItems';//http://116.62.17.128:9090
-	var submitUrl = 'http://116.62.17.128:9090/ap/test/save';
+	var initUrl = '/ap/test/getDeptItems';//http://116.62.17.128:9090
+	var submitUrl = '/ap/test/save';
+	var quitUrl = '/ap/test/drop';
 	var data = {};
 	var answer = [];        //答案数组
 	var curQuesNum = 1;     //当前题目
 	var curAnswer = '';     //当前选项内容
-	var curQuesNo = 0;      //当前选项No
+	var curQuesNo = 0;      //当前问题No
+	var curItemNo = 0;      //当前选项No
 	var curName = '';
 	var curType = '';
 	var touchItem = [];     //phone点击选项
@@ -31,6 +34,7 @@ $(function() {
 		curQuesNum = 1;
 		curAnswer = '';
 		curQuesNo = 0;
+		curItemNo = 0;
 		curName = '';
 		curType = '';
 		touchItem = [];
@@ -40,7 +44,7 @@ $(function() {
 	}
 	
 	function getInitData(id) {
-		Loading.show();
+		//Loading.show();
 		$.Ajax({
 			customUrl: true,
 			url: initUrl,
@@ -49,15 +53,15 @@ $(function() {
 				deptId: id
 			},
 			success: function(json) {
-				Loading.hide();
+				//Loading.hide();
 				//alert(JSON.stringify(json.resultData));
 				if (json && json.code == 0) {
-					data = json.data;
+					data = json.data || {};
 					initView(data);
 				}
 			},
 			error: function(erro) {
-				Loading.hide();
+				//Loading.hide();
 				Toast(erro.msg || '系统正在开小差')
 			}
 		})
@@ -68,6 +72,7 @@ $(function() {
 		$('.pc_content').html(html);
 		
 		var tt = data.title.replace('->','<span>->')+'</span>';
+		//console.log(data.title)
 		var html2 = template('phone_item', data);
 		$('.phone_content').html(html2);
 		$('.title_phone')[0].innerHTML = tt;
@@ -96,9 +101,13 @@ $(function() {
 			curName = this.getAttribute('name');
 			curType = this.getAttribute('type');
 			curQuesNo = this.getAttribute('id');
+			curItemNo = this.getAttribute('aid');
 			touchItem[curQuesNum - 1] = 1;
 			touchItems[this.getAttribute('num')] = 1;
-			//console.log(touchItems)
+			console.log($('#label'+curQuesNo))
+			$('.label'+curQuesNo).removeClass('choose-label');
+			$('#label'+curQuesNo+curItemNo).addClass('choose-label');
+			//this.className('choose-label')//.setAttribute('className', 'choose-label')//addClass('choose-label');
 		});
 		
 		$('.next_button').on('click', function() {
@@ -127,6 +136,7 @@ $(function() {
 				if(curQuesNum <= answer.length) {
 					changeView(curQuesNum);
 					$('.before_button').removeClass('hide');
+					$('.quit_button').addClass('hide');
 				} else {
 					submitAnswer(answer, 'phone');
 				}
@@ -138,6 +148,37 @@ $(function() {
 			curQuesNum--;
 			changeView(curQuesNum);
 		});
+		
+		//放弃测评
+		$('.quit_button').on('click', function() {
+			var quit_client = this.className === 'quit_button' ? 'phone' : 'pc';
+			dialog({
+				title: '确定放弃该部门的测评吗？',
+				type: 2,
+				cb: function() {
+					//Loading.show();
+					$.Ajax({
+						customUrl: true,
+						url: quitUrl,
+						data: {
+							token: urlToken,
+							deptId: department
+						},
+						success: function(json) {
+							//Loading.hide();
+							//alert(JSON.stringify(json.data));
+							if (json && json.code == 0) {
+								handleSuccess(json.data || {}, quit_client);
+							}
+						},
+						error: function(erro) {
+							//Loading.hide();
+							Toast(erro.msg || '系统正在开小差')
+						}
+					})
+				}
+			})
+		})
 		
 		//pc提交按钮
 		$('.submit_button').on('click', function() {
@@ -168,13 +209,13 @@ $(function() {
 		});
 	}
 	
-	
 	function changeView(curView) {
 		$('.list').addClass('hide');
 		$('.list'+curView).removeClass('hide');
 		$('.question-current').html(curView);
 		if(curView === 1) {
 			$('.before_button').addClass('hide');
+			$('.quit_button').removeClass('hide');
 		}
 		if(curView === answer.length) {
 			$('.next_button').html('提交');
@@ -184,7 +225,7 @@ $(function() {
 	}
 	
 	function submitAnswer(answer, client) {
-		Loading.show();
+		//Loading.show();
 		$.Ajax({
 			customUrl: true,
 			url: submitUrl,
@@ -194,14 +235,14 @@ $(function() {
 				itemList: answer
 			},
 			success: function(json) {
-				Loading.hide();
+				//Loading.hide();
 				//alert(JSON.stringify(json.data));
 				if (json && json.code == 0) {
-					handleSuccess(json.data, client);
+					handleSuccess(json.data || {}, client);
 				}
 			},
 			error: function(erro) {
-				Loading.hide();
+				//Loading.hide();
 				Toast(erro.msg || '系统正在开小差')
 			}
 		})

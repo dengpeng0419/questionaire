@@ -8,7 +8,8 @@
     "loading": "src/js/components/loading/loading.js",
     "jweixin100": "src/js/components/jweixin100/jweixin100.js",
     "weixinshare": "src/js/components/weixinshare/weixinshare.js",
-    "toast": "src/js/components/toast/toast.js"
+    "toast": "src/js/components/toast/toast.js",
+    "dialog": "src/js/components/dialog/dialog.js"
   },
   "entry": {
     "index": "src/js/index.js",

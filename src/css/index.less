@@ -109,16 +109,29 @@ input:checked+label::after {
 	background-size: cover;
 }
 
-.submit_button {
-	width: 800/@unit;
-	border-radius: 20/@unit;
+.pc_button {
+	display: flex;
 	margin: 200/@unit auto;
-	padding: 40/@unit 0;
-	color: #fff;
-	background: #058785;
+	width: 1600/@unit;
 	text-align: center;
+	.pc_quit {
+		height: 180/@unit;
+		line-height: 180/@unit;
+		width: 500/@unit;
+		text-decoration:underline;
+		color: #058785;
+	}
+	.submit_button {
+		width: 800/@unit;
+		border-radius: 20/@unit;
+		height: 180/@unit;
+		line-height: 180/@unit;
+		//padding: 40/@unit 0;
+		color: #fff;
+		background: #058785;
+		text-align: center;
+	}
 }
-
 
 .question-num{
 	display: flex;
@@ -149,6 +162,7 @@ input:checked+label::after {
 	flex-direction: column;
 	justify-content: center;
 	margin-top: 60/@unit;
+    overflow: hidden;
 	.answer-item{
 		position: relative;
 		//margin: 0 80/@unit;
@@ -165,16 +179,20 @@ input:checked+label::after {
 			opacity: 1;
 		}
 		input:checked+span {
-			color: #08b8b5;
+			color: #058785;
 		}
         label {
             margin-top: 30/@unit;
             margin-left: 160/@unit;
         }
+		.choose-label {
+			background-image: url("../images/icon_checkbox_fill.png");
+		}
 		span {
 			position: absolute;
 			pointer-events: none;
 			top: 0;
+			left: 0;
 			height: 100%;
 			line-height: 220/@unit;
 			width: 100%;
@@ -190,16 +208,19 @@ input:checked+label::after {
 
 .choose_button{
 	display: flex;
-	justify-content: center;
+	justify-content: space-around;
 	align-items: center;
 	text-align: center;
 	margin: 260/@unit 0;
 	color: #058785;
+	.quit_button {
+		padding: 0 20/@unit;
+	}
 	.before_button {
-		width: 50%;
+        padding: 0 20/@unit;
 	}
 	.next_button {
-		width: 50%;
+        padding: 0 20/@unit;
 	}
 }
 

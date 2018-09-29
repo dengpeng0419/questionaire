@@ -15,10 +15,10 @@ $(function () {
 	var token = '';
 	var apFlag = 'false';
 	
-	Loading.show();
+	//Loading.show();
 	$.Ajax({
 		customUrl: true,
-		url: 'http://116.62.17.128:9090/ap/test/getPeriodDeptList',
+		url: '/ap/test/getPeriodDeptList',
 		data: {
 			token: urlToken,
 		},
@@ -26,7 +26,7 @@ $(function () {
 			Loading.hide();
 			//alert(JSON.stringify(json.resultData));
 			if (json && json.code == 0) {
-				data = json.data;
+				data = json.data || {};
 				var html = template('q_item', data);
 				$('.questions').html(html);
 				$('.submit_button').removeClass('hide');
@@ -34,7 +34,7 @@ $(function () {
 				if($("input[apFlag='false']")[0]) {
 					$("input[apFlag='false']")[0].setAttribute('checked', 'checked');
 				}
-				if(data.deptList && $("input[apFlag='false']").length === data.deptList.length) {
+				if(data.deptList && $("input[apFlag='true']").length === data.deptList.length) {
 					apFlag = 'true'
 				}
 				addListens()
